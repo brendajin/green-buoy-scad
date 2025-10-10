@@ -4,12 +4,12 @@ $fn=128;
 threaded_insert_diameter = 7.35;
 thread_cylinder_diameter = 6.3;
 main_shaft_diameter = 10;
-bottom_section_radius = 8.5;
+bottom_section_radius = 8.5*0.8;
 section_height =10;
-bottom_section_height = 4;
+bottom_section_height = 4*1.2;
 
-torus_hole_diameter = 3;
-torus_diameter = 3;
+torus_hole_diameter = 6;
+torus_diameter = 5;
 
 whistle_short = 3;
 whistle_long = bottom_section_radius*2;
@@ -136,7 +136,7 @@ module buoy_whole(){
 module buoy_number() {
     translate([2, 2, section_height*2.7])
       rotate([90, 0, 45])
-      translate([0, 0, 0.2])
+      translate([1, 0, 0])
       linear_extrude(height = 1.5)
       text("1", size=buoy_number_size, font="Arial:style=Bold");
 }
@@ -199,10 +199,12 @@ module assembly() {
         translate([0,0,section_height*2.91]){
             cylinder(d=torus_hole_diameter, h=ridge_width*2);
         }
-        whistle_cutout();
+        // whistle_cutout();
         buoy_number();
+        rotate([0, 0, 180])
+          buoy_number();
     }
-    whistle_pos();
+    // whistle_pos();
 }
 
 module half_cube(size) {
