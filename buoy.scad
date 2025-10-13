@@ -42,6 +42,17 @@ module buoy_bottom() {
 
 // Common subcomponents
 module buoy_divider(vertical_offset) {
+    hull(){
+        translate([0,0,-1]){
+            scale([.1, .1, 1]){
+                buoy_divider_raw(vertical_offset);
+            }
+        }
+        buoy_divider_raw(vertical_offset);
+    }
+}
+
+module buoy_divider_raw(vertical_offset) {
     translate([0,0,vertical_offset]){
         cube([section_height+ridge_width,section_height+ridge_width,1], true);
     }
@@ -96,15 +107,15 @@ module buoy_top() {
 
 // Internal: raw geometry for top assembly
 module buoy_top_raw(){
+    buoy_divider(section_height*2.3+2);
     buoy_section(section_height+section_height*.4,.8);
     buoy_divider(section_height);
     buoy_section(section_height/2, 1);
     pillars(0, section_height);
     pillars(section_height, section_height*.8);
     criss_cross(section_height, section_height*1.3, section_height*2.45);
-    buoy_divider(section_height*2.3+2);
-
 }
+
 
 module torus_cap(){
     difference(){
@@ -121,7 +132,12 @@ module top_cap(vertical_offset){
         torus_cap();
     }
     translate([0,0,vertical_offset]){
-        cylinder(d=1.5*section_height, h=ridge_width);
+        hull(){
+            cylinder(d=1.5*section_height, h=ridge_width);
+            translate([0,0,-2]){
+                cylinder(d2=1.5*section_height, d1=0, h=2);
+            }
+        }
     }
 }
 
